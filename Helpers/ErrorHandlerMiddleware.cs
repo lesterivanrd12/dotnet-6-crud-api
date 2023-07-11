@@ -1,4 +1,4 @@
-namespace WebApi.Helpers;
+namespace dotnet_6_crud_api.Helpers;
 
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;

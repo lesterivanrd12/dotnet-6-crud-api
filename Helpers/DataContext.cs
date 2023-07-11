@@ -1,7 +1,7 @@
-namespace WebApi.Helpers;
+namespace dotnet_6_crud_api.Helpers;
 
 using Microsoft.EntityFrameworkCore;
-using WebApi.Entities;
+using dotnet_6_crud_api.Entities;
 
 public class DataContext : DbContext
 {

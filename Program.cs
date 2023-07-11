@@ -1,44 +1,36 @@
-﻿using System.Text.Json.Serialization;
-using WebApi.Helpers;
-using WebApi.Services;
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.Extensions.Hosting;
 
-var builder = WebApplication.CreateBuilder(args);
+using dotnet_6_crud_api.Helpers;
 
-// add services to DI container
+using System;
+using System.Net.NetworkInformation;
+
+namespace dotnet_6_crud_api
 {
-    var services = builder.Services;
-    var env = builder.Environment;
- 
-    services.AddDbContext<DataContext>();
-    services.AddCors();
-    services.AddControllers().AddJsonOptions(x =>
+    public class Program
     {
-        // serialize enums as strings in api responses (e.g. Role)
-        x.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
+        public static string MyDefaultURL = "http://localhost:4000"; //"http://192.168.0.137:4000";
+        // public static string MyDefaultURL = string.Format("http://{0}:4000", FileHandler.GetLocalIPAddress(NetworkInterfaceType.Ethernet));
+        public const string RefinedURL = "https://session.poolreno.com/statics";        
+        // public const string MyDefaultURL = "http://178.128.94.184:4000";
+        public static void Main(string[] args)
+        {
+            CreateHostBuilder(args).Build().Run();
+        }
 
-        // ignore omitted parameters on models to enable optional params (e.g. User update)
-        x.JsonSerializerOptions.DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull;
-    });
-    services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
-
-    // configure DI for application services
-    services.AddScoped<IUserService, UserService>();
+        public static IHostBuilder CreateHostBuilder(string[] args) =>
+            Host.CreateDefaultBuilder(args)
+                .ConfigureWebHostDefaults(webBuilder =>
+                {
+                    // change to localhost on testing
+                    webBuilder.UseStartup<Startup>()
+                        .UseKestrel(options =>
+                        {
+                            options.Limits.MaxRequestBodySize = long.MaxValue;
+                        })
+                        .UseUrls(MyDefaultURL);
+                });
+                
+    }
 }
-
-var app = builder.Build();
-
-// configure HTTP request pipeline
-{
-    // global cors policy
-    app.UseCors(x => x
-        .AllowAnyOrigin()
-        .AllowAnyMethod()
-        .AllowAnyHeader());
-
-    // global error handler
-    app.UseMiddleware<ErrorHandlerMiddleware>();
-
-    app.MapControllers();
-}
-
-app.Run("http://localhost:4000");

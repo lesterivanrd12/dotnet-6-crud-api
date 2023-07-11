@@ -1,7 +1,7 @@
-namespace WebApi.Models.Users;
+namespace dotnet_6_crud_api.Models.Users;
 
 using System.ComponentModel.DataAnnotations;
-using WebApi.Entities;
+using dotnet_6_crud_api.Entities;
 
 public class UpdateRequest
 {

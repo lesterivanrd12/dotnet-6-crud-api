@@ -1,8 +1,8 @@
-namespace WebApi.Helpers;
+namespace dotnet_6_crud_api.Helpers;
 
 using AutoMapper;
-using WebApi.Entities;
-using WebApi.Models.Users;
+using dotnet_6_crud_api.Entities;
+using dotnet_6_crud_api.Models.Users;
 
 public class AutoMapperProfile : Profile
 {
